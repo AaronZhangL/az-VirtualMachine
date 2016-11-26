@@ -1,0 +1,17 @@
+[1]
+dracut: SELinux: Could not open policy file <= /etc/selinux/disable/policy/policy.24: No such file or directory /sbin/load_policy
+https://access.redhat.com/solutions/91863
+
+#Resolution
+
+#Use the following configurations for disabling selinux in /set/selinux/config:
+
+SELINUX=disabled
+SELINUXTYPE=targeted
+
+#Use the following parameter for disabling selinux in /boot/grub/grub.conf:
+
+kernel vmlinuz-2.6.32-220.el6.x86_64 <snip> selinux=0
+
+[2]
+...
