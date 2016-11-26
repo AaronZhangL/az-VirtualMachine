@@ -13,5 +13,24 @@ SELINUXTYPE=targeted
 
 kernel vmlinuz-2.6.32-220.el6.x86_64 <snip> selinux=0
 
-[2]
-...
+[2]No more space in root filesystem, how could I increase the size?
+http://superuser.com/questions/1072547/no-more-space-in-root-filesystem-how-could-i-increase-the-size
+
+More general answer for LVM:
+
+Firstly - make sure you have additional unpartitioned storage. Then:
+
+Use fdisk to create new partition (safer than expanding existing one)
+Use pvcreate to create physical LVM volume:
+pvcreate /dev/sdxx
+Use vgextend to extend existing LVM group using new physical volume:
+
+vgextend groupname /dev/sdxx
+You can get group names with vgdisplay
+Use lvextend on lvm mapper to expand lvm volume:
+lvextend -l +100%FREE /dev/mapper/xxx
+Grow the filesystem:
+
+xfs_growfs /dev/mapper/xxx
+Or
+resize2fs /dev/mapper/xxx
